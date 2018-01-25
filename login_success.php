@@ -1,7 +1,16 @@
 <?php
 session_start();
+include("autoloader.php");
 
-
+$service = new Service();
+$mac_address = $_SESSION["mac_address"];
+$result = $service->findMacAddress($mac_address);
+if ($result == 0)
+{
+    $account_id = $_SESSION['account_id'];
+    $service->insertMacAddress($account_id, $mac_address);
+}
+	
 header( "refresh:5;url=http://www.google.com" );
 ?>
 

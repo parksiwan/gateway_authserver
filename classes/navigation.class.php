@@ -20,11 +20,11 @@ class Navigation {
             $nav_items = array("home"=>"index.php", 
                                "register"=>"register.php",
                                "login"=>"login.php",
-                                "news"=>"news.php");
+                                "Ads"=>"news.php");
         } else {
             $nav_items = array("home"=>"index.php", 
                                "logout"=>"logout.php",
-                               "news"=>"news.php");
+                               "Ads"=>"news.php");
         }
         // add the ul element to nav_array
         array_push($nav_array, "<ul class=\"nav navbar-nav navbar-right\">");

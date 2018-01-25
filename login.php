@@ -8,9 +8,7 @@ include("autoloader.php");
 
 if(isset($_GET['mac']) && strval($_GET['mac'])) 
 {
-    //$number_of_posts = isset($_GET['num']) ? intval($_GET['num']) : 10; //10 is the default
     $_SESSION["mac_address"] = strval($_GET['mac']); //no default
-    echo "mac :" . $_SESSION["mac_address"];
 }
 
 // Legacy Login
@@ -22,14 +20,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     if ($account->login())
     {
         $_SESSION["username"] = $username;
-        if ($username == "mywifiadmin")
+        $_SESSION["account_id"] = $account->findUsername();
+        $account->updateLastlogin(0);
+        $account->getAccessLevel();
+        if (($username == "mywifiadmin") || ($account->getAccessLevel() == 1))
         {   
-            $account->updateLastlogin(0);
             header('Location: mywifi_manage.php');    
         }
         else
         {
-            $account->updateLastlogin(0);
             header('Location: login_success.php');    
         }
     } 
@@ -52,7 +51,7 @@ $permissions = ['email']; // Optional permissions
 $loginUrl = $helper->getLoginUrl('https://gateway-parksiwan.c9users.io/login_facebook_success.php', $permissions);
 
 // echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
-
+// test script
 ?>
 
 <!doctype html>

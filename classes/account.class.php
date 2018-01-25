@@ -5,6 +5,9 @@ class Account extends Database
     private $_password;
     private $_re_password;
     private $_email;
+    private $_active;
+    private $_access_level;
+    private $_internet_package;
     private $_message;
     //private $_errors;
     
@@ -16,12 +19,13 @@ class Account extends Database
         $this->_re_password = $re_password;
         $this->_email = $email;
         $this->_message = array();
+        $this->_access_level = 2;
         //$this->_errors = array();
     }
     
     public function login() 
     {
-        $query = "select pk_id, username, email, password, active from accounts where username=? or email=?";
+        $query = "select pk_id, username, email, password, active, access_level, internet_package from accounts where username=? or email=?";
         $statement = $this->connection->prepare($query);
         $statement->bind_param("ss", $this->_username, $this->_username);
         if ($statement->execute()) 
@@ -50,6 +54,10 @@ class Account extends Database
                     //$_SESSION["username"] = $username;
                     $this->_message["type"] = "success";
                     $this->_message["text"] = "password is correct";
+                    
+                    $this->_active = $active;
+                    $this->_access_level = $user["access_level"];
+                    $this->_internet_package = $user["internet_package"];
                     return true;
                 } 
                 else 
@@ -58,6 +66,7 @@ class Account extends Database
                     $this->_message["text"] = "password is incorrect";
                     return false;
                 }
+                
                 //log user in
             } 
             else 
@@ -80,15 +89,17 @@ class Account extends Database
             $result = $statement->get_result();
             if ($result->num_rows > 0) 
             {
+                $user = $result->fetch_assoc();
+                $account_id = $user["pk_id"];
                 $this->_message["type"] = "success";
                 $this->_message["text"] = "password is correct";
-                return true;
+                return $account_id;
             } 
             else 
             {
                 $this->_message["type"] = "fail";
                 $this->_message["text"] = "account not exists";
-                return false;
+                return 0;
             }
         }
         $statement->close();
@@ -246,6 +257,7 @@ class Account extends Database
             //account has been created
             $this->_message["type"] = "success";
             $this->_message["text"] = "Your account has been updated.";
+            $this->_active = $active;
             return true;
         } 
         else 
@@ -297,6 +309,10 @@ class Account extends Database
         return $this->_message;
     }
     
+    public function getAccessLevel()
+    {
+        return $this->_access_level;
+    }
     /*
     public function getErrors($index)
     {

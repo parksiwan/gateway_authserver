@@ -11,7 +11,10 @@ if(isset($_GET['mac']) && strval($_GET['mac']))
     $service = new Service();
     
 	/* grab the posts from the db */
-	$mac_array = $service->findMacAddress($mac_address);
+	$account_id = $service->findMacAddress($mac_address);
+	$mac_array = array();
+	$mac_array["mac_address"] = $mac_address;
+	$mac_array["account_id"] = $account_id;
 	
 	/* output in necessary format */
 	header('Content-type: application/json');

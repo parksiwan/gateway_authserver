@@ -2,8 +2,18 @@
 session_start();
 include("autoloader.php");
 
+$service = new Service();
+$mac_address = $_SESSION["mac_address"];
+$result = $service->findMacAddress($mac_address);
+if ($result == 0)
+{
+    $account_id = $_SESSION['account_id'];
+    $service->insertMacAddress($account_id, $mac_address);
+}
+
 $customer = new Customer();
 $customer_list = $customer->getAllCustomers();
+
 ?>
 
 <!doctype html>
@@ -36,11 +46,10 @@ $customer_list = $customer->getAllCustomers();
             <div class="row">
               <main class="col-md-12">
                   <!-- products -->
-                  <h4>Products</h4>
+                  <h4>Guests Profile</h4>
                   <?php
                   if (count($customer_list) > 0) 
                   {
-                      
                       $counter = 0;
                       foreach ($customer_list as $cust) 
                       {
@@ -53,7 +62,7 @@ $customer_list = $customer->getAllCustomers();
                          
                           // create bootstrap row
                           echo "<div class=\"row\">
-                          <div class=\"col-md-3\">$name</div>
+                          <div class=\"col-md-3\"><a href=\"edit_user_profile.php?id=$name\">$name</a></div>
                           <div class=\"col-md-3\">$email</div>
                           <div class=\"col-md-3\">$access_level</div>
                           <div class=\"col-md-3\">$internet_package</div>

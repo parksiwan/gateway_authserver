@@ -121,6 +121,15 @@ $_SESSION['fb_access_token'] = (string) $accessToken;
 // You can redirect them to a members-only page.
 //header('Location: https://example.com/members.php');
 
+$service = new Service();
+$mac_address = $_SESSION["mac_address"];
+$result = $service->findMacAddress($mac_address);
+if ($result == 0)
+{   
+    $account_id = $fb_account->findFacebookId();
+    $service->insertMacAddress($account_id, $mac_address);
+}
+
 header( "refresh:5;url=http://www.google.com" );
 ?>
 

@@ -31,29 +31,26 @@ class Service extends Database
     
     public function findMacAddress($mac_address) 
     {
-        //$mac_array = array();
-	    $query = "SELECT mac_address, account_id FROM mac_list WHERE mac_address =" . $mac_address;
+	    $query = "SELECT account_id FROM mac_list WHERE mac_address = ?";
         $statement = $this->connection->prepare($query);
+        $statement -> bind_param( "s", $mac_address );
         if ($statement->execute()) 
         {
             $result = $statement->get_result();
+            
             if ($result->num_rows > 0)    // check number of rows in result
             {
-                $macs = array();
-                while ($row = $result->fetch_assoc()) 
-                {
-                    array_push($macs, $row);
-                }
-                return $macs;
+                $row = $result->fetch_assoc();
+                return $row["account_id"];
             } 
             else 
             {
-                return null;
+                return 0;
             }
         } 
         else 
         {
-            return null;
+            return 0;
         }
         $statement->close();
     }
