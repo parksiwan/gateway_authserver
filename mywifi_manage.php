@@ -11,8 +11,8 @@ if ($result == 0)
     $service->insertMacAddress($account_id, $mac_address);
 }
 
-$customer = new Customer();
-$customer_list = $customer->getAllCustomers();
+$user = new User();
+$user_list = $user->getAllUsers();
 
 ?>
 
@@ -48,26 +48,38 @@ $customer_list = $customer->getAllCustomers();
                   <!-- products -->
                   <h4>Guests Profile</h4>
                   <?php
-                  if (count($customer_list) > 0) 
+                  if (count($user_list) > 0) 
                   {
                       $counter = 0;
-                      foreach ($customer_list as $cust) 
+                      echo "<table class=\"table table-hover\">";
+                      echo "<thead><tr><th>Username</th><th>Email</th>
+                            <th>Access Level</th><th>Internet Package</th></tr></thead>";
+                      echo "<tbody>";
+                      foreach ($user_list as $user) 
                       {
-                          $id = $cust["pk_id"];
-                          $name = $cust["username"];
-                          $email = $cust["email"];
-                          $access_level = $cust["access_level_name"];
-                          $internet_package = $cust["internet_package_name"];
+                          echo "<tr>";
+                          $id = $user["pk_id"];
+                          if (empty($user["username"]))
+                          {
+                              $name = $user["full_name"];
+                          }
+                          else 
+                          {
+                              $name = $user["username"];
+                          }
+                          $email = $user["email"];
+                          $access_level = $user["access_level_name"];
+                          $internet_package = $user["internet_package_name"];
                           //$image = $product["image_file_name"];
                          
-                          // create bootstrap row
-                          echo "<div class=\"row\">
-                          <div class=\"col-md-3\"><a href=\"edit_user_profile.php?id=$name\">$name</a></div>
-                          <div class=\"col-md-3\">$email</div>
-                          <div class=\"col-md-3\">$access_level</div>
-                          <div class=\"col-md-3\">$internet_package</div>
-                          </div> ";
+                          echo "<td><div class=\"col-md-3\"><a href=\"edit_user_profile.php?id=$id\">$name</a></div></td>";
+                          echo "<td><div class=\"col-md-3\">$email</div></td>";
+                          echo "<td><div class=\"col-md-3\">$access_level</div></td>";
+                          echo "<td><div class=\"col-md-3\">$internet_package</div></td>";
+                          echo "</tr>";
                       }
+                      echo "</tbody>";
+                      echo "</table>";
                   }
                   ?>
               </main>

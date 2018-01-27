@@ -5,21 +5,29 @@ class Account extends Database
     private $_password;
     private $_re_password;
     private $_email;
+    private $_first_name;
+    private $_last_name;
+    private $_full_name;
     private $_active;
     private $_access_level;
     private $_internet_package;
     private $_message;
     //private $_errors;
     
-    public function __construct($username, $password, $re_password, $email) 
+    public function __construct($username, $password, $re_password, $email, 
+                                $first_name, $last_name, $full_name) 
     {
         parent::__construct();    // call the parent's construct method
         $this->_username = $username;
         $this->_password = $password;
         $this->_re_password = $re_password;
         $this->_email = $email;
-        $this->_message = array();
+        $this->_first_name = $first_name;
+        $this->_last_name = $last_name;
+        $this->_full_name = $full_name;
         $this->_access_level = 2;
+        $this->_internet_package = 1;
+        $this->_message = array();
         //$this->_errors = array();
     }
     
@@ -105,12 +113,37 @@ class Account extends Database
         $statement->close();
     }
     
-  
+    public function getAccountDetails($account_id)
+    {
+        $query = "select username, email, access_level, internet_package from accounts where pk_id = ?";
+        $statement = $this->connection->prepare($query);
+        $statement->bind_param("i", $account_id);
+        
+        if ($statement->execute()) 
+        {
+            $result = $statement->get_result();
+            if ($result->num_rows > 0)    // check number of rows in result
+            {    
+                $account_info = array();
+                while ($row = $result->fetch_assoc()) 
+                {
+                    array_push($account_info, $row);
+                }
+                return $account_info;
+            } 
+            else 
+            {
+                return null;
+            }
+        } 
+        else 
+        {
+            return null;
+        }
+    }
+    
     public function createAccount()
     {
-        //$this->_username = $username;
-        //$this->_password = $password;
-        //$_email = $email;
         //hash the password
         if ($this->_username == "")
         {
@@ -121,11 +154,13 @@ class Account extends Database
             $active = 0;
         }
         $hashed = password_hash($this->_password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO accounts (username, email, password, active, password_salt, password_reminder_token, 
-                                        email_confirmation_token, created_date, updated_date, last_login) 
-                                VALUES (?, ?, ?, ?, ' ', ' ', ' ', '0000-00-00 00:00:00', '0000-00-00 00:00:00','0000-00-00 00:00:00')";
+        $query = "INSERT INTO accounts (username, email, password, active, first_name, last_name, 
+                                        full_name, password_salt, password_reminder_token, 
+                                        email_confirmation_token, access_level, internet_package, created_date, updated_date, last_login) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ' ', ' ', ' ', 2, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00','0000-00-00 00:00:00')";
         $statement = $this->connection->prepare($query);
-        $statement->bind_param("sssi", $this->_username, $this->_email, $hashed, $active);
+        $statement->bind_param("sssisss", $this->_username, $this->_email, $hashed, $active,
+                               $this->_first_name, $this->_last_name, $this->_full_name);
         if ($statement->execute()) 
         {
             //account has been created
@@ -136,7 +171,7 @@ class Account extends Database
         } 
         else 
         {
-            echo $this->connection->errno;
+            echo "why????" . $this->connection->errno;
             if ($this->connection->errno == "1062") 
             {
                 
@@ -297,6 +332,31 @@ class Account extends Database
             $this->_message["text"] = "Update error.";
             return false;
         }   
+    }
+    
+    public function updateUserProfile($access_level, $internet_package)
+    {
+        $date = date('Y-m-d H:i:s');  //NOW();
+        $this->_access_level = $access_level;
+        $this->_internet_package = $internet_package;
+        $query = "UPDATE accounts SET email = ?, access_level = ?, internet_package = ? WHERE username = ?";
+        
+        $statement = $this->connection->prepare($query);
+        $statement->bind_param("siis", $this->_email, $this->_access_level, $this->_internet_package, $this->_username);
+        echo $this->connection->error;
+        if ($statement->execute()) 
+        {
+            //account has been created
+            $this->_message["type"] = "success";
+            $this->_message["text"] = "Your account has been updated.";
+            return true;
+        } 
+        else 
+        {
+            $this->_message["type"] = "danger";
+            $this->_message["text"] = "Update error.";
+            return false;
+        }
     }
     
     public function getMessage($index)

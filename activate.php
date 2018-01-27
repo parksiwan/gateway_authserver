@@ -9,7 +9,7 @@ if (isset($_GET['token']) && isset($_GET['user']) && isset($_GET['sid']))
     echo session_id();
     $username = strval($_GET['user']);
     $verify_token = strval($_GET['token']);
-    $account = new Account($username, "", "", "");
+    $account = new Account($username, "", "", "", "", "", "");
     if ($account->findUsername())
     {
         $account->updateActionAndToken(1, $verify_token); 

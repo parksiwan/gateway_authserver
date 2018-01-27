@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $username = $_POST["userid"];
     $password = $_POST["password"];
-    $account = new Account($username, $password, "", "");
+    $account = new Account($username, $password, "", "", "", "", "");
     if ($account->login())
     {
         $_SESSION["username"] = $username;

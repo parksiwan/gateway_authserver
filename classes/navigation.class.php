@@ -17,14 +17,14 @@ class Navigation {
     public function getNavigation() {
         $nav_array = array();
         if ($this->logged_in == false) {
-            $nav_items = array("home"=>"index.php", 
+            $nav_items = array("home"=>"mywifi_manage.php", 
                                "register"=>"register.php",
                                "login"=>"login.php",
-                                "Ads"=>"news.php");
+                                "Ads"=>"ads_manage.php");
         } else {
-            $nav_items = array("home"=>"index.php", 
-                               "logout"=>"logout.php",
-                               "Ads"=>"news.php");
+            $nav_items = array("home"=>"mywifi_manage.php", 
+                               "Ads"=>"ads_manage.php",
+                               "logout"=>"logout.php");
         }
         // add the ul element to nav_array
         array_push($nav_array, "<ul class=\"nav navbar-nav navbar-right\">");

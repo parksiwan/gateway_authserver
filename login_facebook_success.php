@@ -100,18 +100,25 @@ $fb_account_name = $user['name'];
 $fb_account_id = $user['id'];
 $fb_account_email = $user['email'];
 
+if ($fb_account_email == null)
+{
+    $fb_account_email = "";
+}
+
+
 $fb_account = new FBAccount($fb_account_id);
 $id = $fb_account->findFacebookId();
 if ($id == 0)
 {
-    $account = new Account("", "", "", $fb_account_email);
+    $account = new Account("", "", "", $fb_account_email, "", "", $fb_account_name);
     $last_id = $account->createAccount();  
+    
     $fb_account->createFacebookAccount($last_id);
     $account->updateLastlogin($last_id);
 }
 else
 {
-    $account = new Account("", "", "", $fb_account_email);
+    $account = new Account("", "", "", $fb_account_email, "", "", $fb_account_name);
     $account->updateLastlogin($id);
 }
 

@@ -9,7 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $password = $_POST["password1"];
     $re_password = $_POST["password2"];
     $email = $_POST["email"];
-    $account = new Account($username, $password, $re_password, $email);
+    $first_name = $_POST["firstname"];
+    $last_name = $_POST["lastname"];
+    $account = new Account($username, $password, $re_password, $email, $first_name, $last_name, "");
     
     $messages = array();  // = [];
     if (!$account->checkUsername())
@@ -105,6 +107,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                                 <label for="username">Username</label>
                                 <input class="form-control" type="text" name="username" id="username" placeholder="username88" value="<?php echo $username; ?>">
                                 <span class="help-block"><? echo $errors["username"];?></span>
+                            </div>
+                            <!-- first name -->
+                            <div class="form-group <?php echo $error_class; ?>">
+                                <label for="firstname">First name</label>
+                                <input class="form-control" type="text" name="firstname" id="firstname" placeholder="first name" value="<?php echo $first_name; ?>">
+                                <span class="help-block"><? echo $errors["firstname"];?></span>
+                            </div>
+                            <!-- last name -->
+                            <div class="form-group <?php echo $error_class; ?>">
+                                <label for="lastname">Last name</label>
+                                <input class="form-control" type="text" name="lastname" id="lastname" placeholder="last name" value="<?php echo $last_name; ?>">
+                                <span class="help-block"><? echo $errors["lastname"];?></span>
                             </div>
                             <!-- email -->
                             <?php

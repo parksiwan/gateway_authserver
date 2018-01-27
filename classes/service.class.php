@@ -72,7 +72,7 @@ class Service extends Database
                 {
                     array_push($usernames, $row);
                 }
-                return $macs;
+                return $usernames;
             } 
             else 
             {

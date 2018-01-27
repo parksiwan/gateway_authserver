@@ -3,28 +3,25 @@ session_start();
 echo session_id();
 include("autoloader.php");
 
+if(isset($_GET['id']) && intval($_GET['id'])) 
+{
+    $account_id = intval($_GET['id']); //no default
+    $account = new Account("", "", "", "", "", "", "");
+    $account_info = array();
+    $account_info = $account->getAccountDetails($account_id);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $username = $_POST["username"];
-    $password = $_POST["password1"];
-    $re_password = $_POST["password2"];
     $email = $_POST["email"];
-    $account = new Account($username, $password, $re_password, $email);
+    $access_level = $_POST["access_level"];
+    $internet_package = $_POST["internet_package"];
+    $account = new Account($username, "", "", $email, "", "", "");
     
     $messages = array();  // = [];
-    if (!$account->checkUsername())
-    {
-        $messages = $account->getAllMessage();
-        
-    }
     
     if (!$account->checkEmail())
-    {
-        $messages = $account->getAllMessage();
-        
-    }
-    
-    if (!$account->checkPassword())
     {
         $messages = $account->getAllMessage();
         
@@ -33,15 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     //count the number of errors, if 0 then proceed
     if (count($messages) == 0) 
     {
-        $account_id = $account->createAccount();
-        if ($account_id > 0)
-        {
-            $session_id = session_id();
-            $messages = $account->emailVerificationLink($session_id);
-            $_SESSION["account_id"] = $account_id;
-        }
+        $account->updateUserProfile($access_level, $internet_package);
+        
     }
-    echo $messages;
 }
 ?>
 
@@ -70,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
              fjs.parentNode.insertBefore(js, fjs);
            }(document, 'script', 'facebook-jssdk'));
         </script>
-        
+        <?php include("includes/navigation.php"); ?>
         <div class="container text-center"> 
         	<header>
         		<div  class="navbar-header">
@@ -87,8 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         	<div class="container">
                 <div class="row">
                     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3" >
-                        <form id="register-form" method="post" action="register.php">
-                            <h2>Register for account</h2>
+                        <form id="register-form" method="post" action="edit_user_profile.php">
+                            <h2>Edit User profile</h2>
                             <?php
                             if (count($message) > 0)
                             {
@@ -103,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             ?>
                             <div class="form-group <?php echo $error_class; ?>">
                                 <label for="username">Username</label>
-                                <input class="form-control" type="text" name="username" id="username" placeholder="username88" value="<?php echo $username; ?>">
+                                <input class="form-control" type="text" name="username" id="username" placeholder="username88" value="<?php echo $account_info[0]["username"]; ?>">
                                 <span class="help-block"><? echo $errors["username"];?></span>
                             </div>
                             <!-- email -->
@@ -115,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             ?>
                             <div class="form-group <?php echo $error_class; ?>">
                                 <label for="email">Email Address</label>
-                                <input class="form-control" type="email" name="email" id="email" placeholder="username88@domain.com" value="<?php echo $email; ?>">
+                                <input class="form-control" type="email" name="email" id="email" placeholder="username88@domain.com" value="<?php echo $account_info[0]["email"]; ?>">
                                 <span class="help-block"><? echo $errors["email"];?></span>
                             </div>
                             <!-- password -->
@@ -126,17 +117,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                                 $error_class = "";    
                             ?>
                             <div class="form-group <?php echo $error_class; ?>">
-                                <label for="password">Password</label>
-                                <input class="form-control" type="password" name="password1" id="password1" placeholder="minimum 8 characters">
+                                <label for="password">Access Level</label>
+                                <select class="form-control" name="access_level">
+                                  <option value="2">guests</option>
+                                  <option value="1">manager</option>
+                                </select>
                             </div>
                             <div class="form-group <?php echo $error_class; ?>">
-                                <label for="password">Retype Password</label>
-                                <input class="form-control" type="password" name="password2" id="password2" placeholder="please retype your password">
+                                <label for="password">Internet Package</label>
+                                <select class="form-control" name="internet_package">
+                                  <option value="1">standard</option>
+                                  <option value="2">premium</option>
+                                </select>
                                 <span class="help-block"><? echo $errors["password"];?></span>
                             </div>
                             <br>
-                            <button type="reset" class="btn btn-warning">Clear Form</button>
-                            <button type="submit" class="btn btn-success">Register</button>
+                            <button type="reset" class="btn btn-warning">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                         </form>
                     </div>
                     <p><?php echo $messages ?></p>

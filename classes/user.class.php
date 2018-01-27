@@ -1,7 +1,7 @@
 <?php
-class Customer extends Database 
+class User extends Database 
 {
-    private $_customer_id;
+    private $_user_id;
     //private $_password;
     
     private $_level;
@@ -19,10 +19,10 @@ class Customer extends Database
         
     }
     
-    public function getAllCustomers() 
+    public function getAllUsers() 
     {
         // get all products from database
-        $query = "SELECT ac.pk_id, ac.username, ac.email, al.access_level_name, ip.internet_package_name FROM accounts as ac
+        $query = "SELECT ac.pk_id, ac.username, ac.email, ac.full_name, al.access_level_name, ip.internet_package_name FROM accounts as ac
                   INNER JOIN access_level as al ON ac.access_level = al.access_level_id
                   INNER JOIN internet_package as ip ON ac.internet_package = ip.internet_package_id";
         $statement = $this->connection->prepare($query);
