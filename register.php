@@ -1,6 +1,6 @@
 <?php
 session_start();
-echo session_id();
+//echo session_id();
 include("autoloader.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION["account_id"] = $account_id;
         }
     }
-    echo $messages;
+    //echo $messages;
 }
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-echo session_id();
+//echo session_id();
 include("autoloader.php");
 
 if(isset($_GET['id']) && intval($_GET['id'])) 
@@ -63,18 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </script>
         <?php include("includes/navigation.php"); ?>
         <div class="container text-center"> 
-        	<header>
-        		<div  class="navbar-header">
-        		  <img src="images/logo5.png" width="50px">
-        		</div>
-        		<div  class="navbar-header">
-        			<h1>myWiFi (Broadband Service)</h1>	
-        		</div>
-        	</header>
-        	<div class="feature">
-        		<a href="index.php">Free Website</a></li>				
-        	</div>
-
         	<div class="container">
                 <div class="row">
                     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3" >
@@ -109,13 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                                 <input class="form-control" type="email" name="email" id="email" placeholder="username88@domain.com" value="<?php echo $account_info[0]["email"]; ?>">
                                 <span class="help-block"><? echo $errors["email"];?></span>
                             </div>
-                            <!-- password -->
-                            <?php
-                            if ($errors["password"])
-                                $error_class = "has-error";
-                            else 
-                                $error_class = "";    
-                            ?>
                             <div class="form-group <?php echo $error_class; ?>">
                                 <label for="password">Access Level</label>
                                 <select class="form-control" name="access_level">
@@ -139,9 +120,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     <p><?php echo $messages ?></p>
                 </div>
             </div> 
-        	<footer class="container-fluid text-center">
-        	<p>Powered By AIT Communication 2017</p>
-        	</footer>	
         </div>
+        <footer class="container-fluid text-center">
+        	<p>Powered By AIT Communication 2017</p>
+        </footer>
     </body>
 </html>

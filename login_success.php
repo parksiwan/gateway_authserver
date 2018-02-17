@@ -9,8 +9,15 @@ if ($result == 0)
 {
     $account_id = $_SESSION['account_id'];
     $service->insertMacAddress($account_id, $mac_address);
+    $getdata = http_build_query( array(
+                    'mac_address' => $mac_address,
+                    'account_id' => $account_id,
+                    'internet_package'=>1
+                     ));
+    file_get_contents('http://mywifigw.ddns.net/service_iptables.php?'.$getdata, false);
 }
-	
+
+
 header( "refresh:5;url=http://www.google.com" );
 ?>
 
@@ -50,7 +57,7 @@ header( "refresh:5;url=http://www.google.com" );
         		</div>
         	</header>
         	<div class="feature">
-        		<a href="index.php">Free Website</a></li>				
+        		<h5>  </h5>				
         	</div>
 
         	<div class="row">
@@ -71,8 +78,8 @@ header( "refresh:5;url=http://www.google.com" );
         					<img src="images/ad1.jpg" width="500px">
         				</div>
         				<div class="thumbnail">
-        					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. 
-        					Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+        					True Mexical food has both a depth of flavour with its combination of savoury and earthy flavours. Best ever.
+        					Try it out !
         				</div>
         			</div>
         		</div>

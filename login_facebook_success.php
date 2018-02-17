@@ -135,6 +135,12 @@ if ($result == 0)
 {   
     $account_id = $fb_account->findFacebookId();
     $service->insertMacAddress($account_id, $mac_address);
+    $getdata = http_build_query( array(
+                    'mac_address' => $mac_address,
+                    'account_id' => $account_id,
+                    'internet_package'=>1
+                     ));
+    file_get_contents('http://mywifigw.ddns.net/service_iptables.php?'.$getdata, false);
 }
 
 header( "refresh:5;url=http://www.google.com" );

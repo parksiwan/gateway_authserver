@@ -171,7 +171,6 @@ class Account extends Database
         } 
         else 
         {
-            echo "why????" . $this->connection->errno;
             if ($this->connection->errno == "1062") 
             {
                 
@@ -286,7 +285,7 @@ class Account extends Database
         
         $statement = $this->connection->prepare($query);
         $statement->bind_param("isss", $active, $date, $email_confirmation_token, $this->_username);
-        echo $this->connection->error;
+        //echo $this->connection->error;
         if ($statement->execute()) 
         {
             //account has been created
@@ -318,7 +317,7 @@ class Account extends Database
             $statement = $this->connection->prepare($query);
             $statement->bind_param("si", $date, $id); 
         }
-        echo $this->connection->error;
+        //echo $this->connection->error;
         if ($statement->execute()) 
         {
             //account has been created
@@ -343,7 +342,7 @@ class Account extends Database
         
         $statement = $this->connection->prepare($query);
         $statement->bind_param("siis", $this->_email, $this->_access_level, $this->_internet_package, $this->_username);
-        echo $this->connection->error;
+        //echo $this->connection->error;
         if ($statement->execute()) 
         {
             //account has been created

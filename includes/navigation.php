@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="navbar-header">
     <a class="navbar-brand">
-      Website Name
+      MyWiFi Admin
     </a>
     <form class="navbar-form navbar-left" role="search" method="get" action="search.php">
       <div class="form-group">

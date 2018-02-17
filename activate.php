@@ -6,15 +6,15 @@ if (isset($_GET['token']) && isset($_GET['user']) && isset($_GET['sid']))
 {
     session_id(strval($_GET['sid']));
     session_start();
-    echo session_id();
+    //echo session_id();
     $username = strval($_GET['user']);
     $verify_token = strval($_GET['token']);
     $account = new Account($username, "", "", "", "", "", "");
     if ($account->findUsername())
     {
         $account->updateActionAndToken(1, $verify_token); 
-        echo "session_mac :" . $_SESSION['mac_address'];
-        echo "id :" . $_SESSION['account_id'];
+        //echo "session_mac :" . $_SESSION['mac_address'];
+        //echo "id :" . $_SESSION['account_id'];
         if (isset($_SESSION['account_id']) && isset($_SESSION['mac_address']))
         {
              $service = new Service();
@@ -22,17 +22,19 @@ if (isset($_GET['token']) && isset($_GET['user']) && isset($_GET['sid']))
              $mac_address = $_SESSION['mac_address'];
              $service->insertMacAddress($account_id, $mac_address);
         }
+        $getdata = http_build_query( array(
+                    'mac_address' => $mac_address,
+                    'account_id' => $account_id,
+                    'internet_package'=>1
+                     ));
+        file_get_contents('http://mywifigw.ddns.net/service_iptables.php?'.$getdata, false);
+        //$url = 'http://mywifigw.ddns.net/service_iptables.php?mac_address=$mac_address&account_id=$account_id&internet_package=1';
+        //echo $url;
+        //$response = file_get_contents($url);
+    
     }
 	header( "refresh:5;url=http://www.google.com" );
-	/* connect to the db */
-    //$service = new Service();
-    
-	/* grab the posts from the db */
-	//$mac_array = $service->findMacAddress($mac_address);
-	
-	/* output in necessary format */
-	//header('Content-type: application/json');
-	//echo json_encode(array('macs'=>$mac_array));
+
 }
 
 ?>

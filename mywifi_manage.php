@@ -46,7 +46,7 @@ $user_list = $user->getAllUsers();
             <div class="row">
               <main class="col-md-12">
                   <!-- products -->
-                  <h4>Guests Profile</h4>
+                  <h3>Guests Profile</h3>
                   <?php
                   if (count($user_list) > 0) 
                   {
@@ -85,5 +85,8 @@ $user_list = $user->getAllUsers();
               </main>
             </div>
         </div>
+        <footer class="container-fluid text-center">
+        	<p>Powered By AIT Communication 2017</p>
+        </footer>
     </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-echo session_id();
+//echo session_id();
 include("autoloader.php");
 //include("includes/database.php");
 //$account = new Account("siwan", "psw1101714");
@@ -89,7 +89,7 @@ $loginUrl = $helper->getLoginUrl('https://gateway-parksiwan.c9users.io/login_fac
         		</div>
         	</header>
         	<div class="feature">
-        		<a href="index.php">Free Website</a></li>				
+        		<h5>   </h5>	
         	</div>
 
         	<div class="row">
@@ -123,8 +123,9 @@ $loginUrl = $helper->getLoginUrl('https://gateway-parksiwan.c9users.io/login_fac
         			</div>
         			<div class="alert alert-success fade in">				
         				<p><strong>Note:</strong></p>
-        				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. 
-        				Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+        				Login using your account or your facebook account. If this is your first try, please register.
+        				Multiple devices are allowed to login and maximum daily usage per device is up to 1GB. 
+        				.
         			</div>
         			
         		</div>
@@ -134,8 +135,8 @@ $loginUrl = $helper->getLoginUrl('https://gateway-parksiwan.c9users.io/login_fac
         					<img src="images/ad1.jpg" width="500px">
         				</div>
         				<div class="thumbnail">
-        					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. 
-        					Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+        					True Mexical food has both a depth of flavour with its combination of savoury and earthy flavours. Best ever.
+        					Try it out !
         				</div>
         			</div>
         		</div>
